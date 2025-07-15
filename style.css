@@ -1,3 +1,9 @@
+*{
+font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
 html{
     display: flex;
     justify-content: center;
@@ -20,23 +26,52 @@ grid-template-columns: 33% auto 33%;
 background-color: rgb(210, 255, 208);
 width: 600px;
 height: 600px;
+border-radius: 50px;
+overflow: hidden;
+}
+
+button {
+    background-color: beige;
+    border: none;
+    cursor: pointer;
+
+}
+button :active {
+    scale: 0.9;
 }
 #title{
     background-color: rgb(254, 255, 210);
     color: rgb(210, 210, 255);
     margin: 0px;
     grid-area: title;
+    font-size: 60px;
 }
 #open-input{
     grid-area: open;
+    position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+#file-input{
+    position: absolute;
+    opacity: 0;
+    background-color: azure;
+    inset: 0;
 }
 
 #beats {
     grid-area: beats;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #scrub-input {
+    display: flex;
     grid-area: scrub;
+    position: relative;
 }
 
 #previous-button{
@@ -47,14 +82,40 @@ height: 600px;
     grid-area: playpause;
 }
 
+#icon-play{
+
+}
+
+#icon-pause{
+    display: none;
+}
+
 #next-button{
     grid-area: next;
 }
 
 #volume-input{
+    display: flex;
     grid-area: volume;
+    position: relative;
 }
 
 #tumo{
     grid-area: tumo;
+}
+
+
+.range-bar{
+    position: absolute;
+    background-color: white;
+    inset: 0;
+    opacity: 0.5;
+    pointer-events: none;
+    transform: scaleX(0.5);
+    transform-origin: left;
+}
+
+input[type="range"] {
+    flex: 1;
+    opacity: 0;
 }
