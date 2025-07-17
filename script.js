@@ -1,5 +1,8 @@
 window.onload = async function(){
-
+// carregar o service worker
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+}
     //carregar dados da internet (data.json) wowowowowowowowow
     let request = await fetch ("data.json");
     let audioData = await request.json()
@@ -29,7 +32,13 @@ window.onload = async function(){
     }
 
     previousButton.onclick = function () {
+        currentMusic--;
+        if(currentMusic < 0){
+            currentMusic = audioData.lenght-1;
+        }
+        playAudio()
     }
+    
 
     playButton.onclick = function () {
         if(audio.paused){
@@ -40,24 +49,48 @@ window.onload = async function(){
     }
 
     nextButton.onclick = function () {
+        currentMusic++;
+        if(currentMusic >= audioData.lenght){
+            currentMusic = 0
+        }
+        playAudio()
     }
 
     scrubInput.querySelector("input").oninput =function(event) {
         let bar = scrubInput.querySelector(".range-bar");
+        let value = event.target.value;
+        scrubAudio(value);
         updateInputBar(event.target.value, bar);
+    
     }
 
     volumeInput.querySelector("input").oninput =function(event) {
         let bar = volumeInput.querySelector(".range-bar");
+        let value = event.target.value;
+        audio.volume = value /
         updateInputBar(event.target.value, bar);
     }
 
-    fileInput.oninput = function (){
-        console.log("aqui!")
+    fileInput.oninput = function (event){
+
+        let file = Array.from(fileInput.files)[0];
+        let reader = new FileReader();
+        reader.onload = function() {
+            audioData.push({
+                title: file.name,
+                url: reader.result
+            });
+
+            console.log(audioData)
+        }
+        if (file) {
+            reader.readAsDataURL(file);
+        }
     }
     function playAudio(){
         console.log("qwl")
         audio.src = audioData[currentMusic].url;
+        changeTitle(audioData[currentMusic].title);
         audio.play();
     }
     function pauseAudio(){
@@ -77,5 +110,17 @@ window.onload = async function(){
         playIcon.style.display = "block";
         pauseIcon.style.display = "none"
     
+}
+audio.ontimeupdate = function() {
+    let bar = scrubInput.querySelector(".range-bar");
+    let value = (audio.currentTime / audio.duration) * 100;
+    updateInputBar(value, bar);
+}
+
+function scrubAudio(value){
+    console.log(audio.duration)
+    console.log(audio.currentTime)
+
+    audio.currentTime = audio.duration * (value / 100);
 }
 }
