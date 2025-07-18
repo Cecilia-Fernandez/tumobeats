@@ -40,11 +40,11 @@ button :active {
     scale: 0.9;
 }
 #title{
-    background-color: rgb(254, 255, 210);
     color: rgb(210, 210, 255);
     margin: 0px;
     grid-area: title;
-    font-size: 60px;
+    font-size: 50px;
+
 }
 #open-input{
     grid-area: open;
@@ -100,6 +100,8 @@ align-items: center;
     position: relative;
 }
 
+
+
 #tumo{
     grid-area: tumo;
 }
@@ -109,7 +111,7 @@ align-items: center;
     position: absolute;
     background-color: white;
     inset: 0;
-    opacity: 0.5;
+    opacity: 1;
     pointer-events: none;
     transform: scaleX(0.5);
     transform-origin: left;

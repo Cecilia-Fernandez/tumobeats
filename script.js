@@ -2,7 +2,7 @@ window.onload = async function(){
 // carregar o service worker
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js")
-}
+ }
     //carregar dados da internet (data.json) wowowowowowowowow
     let request = await fetch ("data.json");
     let audioData = await request.json()
@@ -20,7 +20,8 @@ if ("serviceWorker" in navigator) {
     let fileInput = document.querySelector("#file-input")
 
     let audio = document.querySelector("audio")
-    let currentMusic = 1
+    let currentMusic = 0
+    let pauseTime = 0;
 
 
     // Funções
@@ -43,7 +44,10 @@ if ("serviceWorker" in navigator) {
     playButton.onclick = function () {
         if(audio.paused){
             playAudio();
+            audio.currentTime = pauseTime;
+            pauseTime = 0;
         } else {
+            pauseTime = audio.currentTime;
             pauseAudio();
         }
     }
@@ -100,14 +104,15 @@ if ("serviceWorker" in navigator) {
         let playIcon = document.querySelector("#icon-play")
         let pauseIcon = document.querySelector("#icon-pause")
         playIcon.style.display = "none";
-        pauseIcon.style.display = "block"
+        pauseIcon.style.display = "initial"
+    
         
         console.log("audio esta a tocar!")
     }
     audio.onpause = function (){
         let playIcon = document.querySelector("#icon-play")
         let pauseIcon = document.querySelector("#icon-pause")
-        playIcon.style.display = "block";
+        playIcon.style.display = "initial";
         pauseIcon.style.display = "none"
     
 }
@@ -115,6 +120,10 @@ audio.ontimeupdate = function() {
     let bar = scrubInput.querySelector(".range-bar");
     let value = (audio.currentTime / audio.duration) * 100;
     updateInputBar(value, bar);
+}
+
+audio.onended = function() {
+    nextButton.click()
 }
 
 function scrubAudio(value){
